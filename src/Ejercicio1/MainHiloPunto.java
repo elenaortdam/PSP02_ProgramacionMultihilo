@@ -18,22 +18,22 @@ public class MainHiloPunto {
 		ventana.setVisible(true);
 		ventana.setResizable(false);
 
-		HiloPunto panel = new HiloPunto(ventana.getSize().getHeight() + 100,
-										ventana.getSize().getWidth() + 100,
+		HiloPunto panel = new HiloPunto(ventana.getSize().getWidth(),
+										ventana.getSize().getHeight(),
 										ventana.getGraphics(), Color.RED);
 		ventana.add(panel);
 		Thread thread = new Thread(panel);
 		thread.start();
 
-		HiloPunto dos = new HiloPunto(ventana.getSize().getHeight(),
-									  ventana.getSize().getWidth(),
+		HiloPunto dos = new HiloPunto(ventana.getSize().getWidth(),
+									  ventana.getSize().getHeight(),
 									  ventana.getGraphics(), Color.BLUE);
 		ventana.add(dos);
 		Thread thread1 = new Thread(dos);
 		thread1.start();
 
-		HiloPunto tres = new HiloPunto(ventana.getSize().getHeight() + 100,
-									   ventana.getSize().getWidth() + 100,
+		HiloPunto tres = new HiloPunto(ventana.getSize().getWidth(),
+									   ventana.getSize().getHeight(),
 									   ventana.getGraphics(), Color.GREEN);
 		ventana.add(tres);
 		Thread thread2 = new Thread(tres);
