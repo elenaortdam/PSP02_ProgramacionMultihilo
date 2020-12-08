@@ -11,9 +11,23 @@ public class Jugador extends Thread {
 
 	public void run() {
 		while (!arbitro.isFinJuego()) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			if (arbitro.getTurno() == numeroJugador) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				int jugada = 1 + (int) (10 * Math.random());
-				arbitro.nuevaJugada(numeroJugador, jugada);
+				try {
+					arbitro.comprobarJugada(numeroJugador, jugada);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

@@ -4,11 +4,16 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		Arbitro arbitro = new Arbitro(2);
-		Jugador jugador1 = new Jugador(1, arbitro);
-		Jugador jugador2 = new Jugador(2, arbitro);
-		jugador1.start();
-		jugador2.start();
+		int numeroJugadores = 5;
+		Arbitro arbitro = new Arbitro(numeroJugadores);
+		for (int i = 1; i <= numeroJugadores; i++) {
+			new Jugador(i, arbitro).start();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
+		}
 	}
 }
