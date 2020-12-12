@@ -40,7 +40,8 @@ public class HiloPunto extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-		while (true) {
+		for (int i = 0; i < 3000; i++) {
+
 			HiloPunto test = new HiloPunto(alto, ancho, graphics, color);
 			test.paintComponent(graphics);
 			try {

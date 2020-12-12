@@ -1,14 +1,21 @@
 package Ejercicio1;
 
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainHiloPunto {
 
-	public static final int ANCHO_VENTANA = 450;
-	public static final int ALTO_VENTANA = 300;
-	public static final int SLEEP_TIME = 10000; //3 Segundos
+	public void mostrarMensajeCerrar(JFrame ventana) {
+		ventana.addWindowListener(new WindowAdapter() {
+			@Override public void windowClosing(WindowEvent e) {
+				System.out.println("Fin del proceso...");
+				super.windowClosing(e);
+			}
+		});
+
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 
@@ -18,6 +25,9 @@ public class MainHiloPunto {
 		ventana.setVisible(true);
 		ventana.setResizable(false);
 		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		MainHiloPunto hiloPunto = new MainHiloPunto();
+		hiloPunto.mostrarMensajeCerrar(ventana);
 
 		HiloPunto panel = new HiloPunto(ventana.getSize().getWidth(),
 										ventana.getSize().getHeight(),
