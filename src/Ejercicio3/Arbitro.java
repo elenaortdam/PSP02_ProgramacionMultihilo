@@ -9,7 +9,6 @@ public class Arbitro {
 
 	public Arbitro(int totalJugadores) {
 		this.totalJugadores = totalJugadores;
-//		this.turno = 1 + (int) (totalJugadores * Math.random());
 		this.turno = 1;
 		this.numeroAdivinar = 1 + (int) (10 * Math.random());
 		System.out.println("El número para adivinar es: " + this.numeroAdivinar);

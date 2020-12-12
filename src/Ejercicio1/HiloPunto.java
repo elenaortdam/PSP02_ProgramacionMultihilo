@@ -20,17 +20,6 @@ public class HiloPunto extends JPanel implements Runnable {
 	private int recalculatePoint(int maximo) {
 
 		return (int) (Math.random() * maximo);
-		/*
-		Integer random = 1;
-		random = (int) (10 * Math.random());
-		if (random == 0) {
-
-			random = 1;
-		}
-
-		return maximo / random;
-
-		 */
 	}
 
 	public void paint(Graphics g) {

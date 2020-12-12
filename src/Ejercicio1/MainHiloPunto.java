@@ -17,6 +17,7 @@ public class MainHiloPunto {
 		ventana.setSize(450, 300);
 		ventana.setVisible(true);
 		ventana.setResizable(false);
+		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		HiloPunto panel = new HiloPunto(ventana.getSize().getWidth(),
 										ventana.getSize().getHeight(),
