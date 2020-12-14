@@ -3,24 +3,19 @@ package Ejercicio2;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionListener {
 
-	private Thread thread;
 	private int x;
 	private final int y;
 	private final int desplazamiento;
 	private final Graphics g;
 	private final Color color;
 	private final double ancho;
-	private Button b1;
 	private boolean parar;
 	private boolean pararBola1 = false;
-	List<Thread> threads = new ArrayList<>();
 	boolean isAvailable = true;
 
 	public HiloBolita(int x, int y, int desplazamiento, Graphics g,
@@ -43,48 +38,40 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 		Thread hiloActual = Thread.currentThread();
 
 		while (hiloActual.getThreadGroup().getName().equals("Bolitas") && !parar) {
-			synchronized (hiloActual) {
+			System.out.println("Ejecutando " + Thread.currentThread().getName() + " " + color);
 
-				if (!hiloActual.getName().equalsIgnoreCase("Bola 1") || !pararBola1) {
-					this.isAvailable = true;
-					repaint(new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
-					if (x + ancho > getWidth()) {
-						do {
-							x = x - desplazamiento;
-							try {
-								repaint(new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
-								Thread.sleep(10);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							repaint(new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
-						} while (x > 0);
-					} else {
+			if (!hiloActual.getName().equalsIgnoreCase("Bola 1") || !pararBola1) {
+				this.isAvailable = true;
+				repaint();
+				if (x + ancho > getWidth()) {
+					do {
+						x = x - desplazamiento;
+						try {
+							repaint();
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						repaint();
+					} while (x > 0);
+				} else {
 
-						x = x + desplazamiento;
-					}
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException ex) {
+					x = x + desplazamiento;
+				}
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException ex) {
 
-					}
 				}
 			}
+
 		}
 
 	}
 
-	public synchronized void notAvailable() throws InterruptedException {
-		this.isAvailable = false;
-	}
-
-	public synchronized void available() {
-		this.isAvailable = true;
-	}
-
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+		System.out.println("Pintando " + Thread.currentThread().getName() + " " + color);
 		g.setColor(color);
 		g.fillOval(x, y, 10, 10);
 		g.drawOval(x, y, 10, 10);
@@ -136,6 +123,7 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 		if (this.pararBola.getText().equalsIgnoreCase("Parar Bola 1")) {
 			this.pararBola1 = true;
 			this.pararBola.setText("Reanudar Bola 1");
+			System.out.println("Parando Bola 1");
 			repaint();
 			try {
 				Thread.sleep(100);
@@ -145,6 +133,7 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 		} else {
 			this.pararBola1 = false;
 			this.pararBola.setText("Parar Bola 1");
+			System.out.println("Reanudando bola 1");
 			repaint();
 		}
 
