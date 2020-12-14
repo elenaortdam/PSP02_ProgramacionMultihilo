@@ -16,7 +16,7 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 	private final double ancho;
 	private boolean parar;
 	private boolean pararBola1 = false;
-	boolean isAvailable = true;
+	private boolean available = true;
 
 	public HiloBolita(int x, int y, int desplazamiento, Graphics g,
 					  Color color, double ancho) {
@@ -41,21 +41,20 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 			System.out.println("Ejecutando " + Thread.currentThread().getName() + " " + color);
 
 			if (!hiloActual.getName().equalsIgnoreCase("Bola 1") || !pararBola1) {
-				this.isAvailable = true;
-				repaint();
+				this.available = true;
+				pintarBola();
 				if (x + ancho > getWidth()) {
 					do {
 						x = x - desplazamiento;
 						try {
-							repaint();
+							pintarBola();
 							Thread.sleep(10);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						repaint();
+						pintarBola();
 					} while (x > 0);
 				} else {
-
 					x = x + desplazamiento;
 				}
 				try {
@@ -69,9 +68,26 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 
 	}
 
+	public synchronized void pintarBola() {
+		notifyAll();
+
+		while (available) {
+			available = false;
+			repaint();
+		}
+
+		available = true;
+
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.println("Pintando " + Thread.currentThread().getName() + " " + color);
+		System.out.println("PAINT COMPONENT " + Thread.currentThread().getName() + " " + color);
 		g.setColor(color);
 		g.fillOval(x, y, 10, 10);
 		g.drawOval(x, y, 10, 10);

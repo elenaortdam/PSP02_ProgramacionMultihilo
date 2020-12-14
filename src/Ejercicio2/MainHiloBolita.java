@@ -39,7 +39,6 @@ public class MainHiloBolita {
 
 		ventana.add(bolita2);
 
-
 		Thread thread3 = new Thread(threadGroup,
 									bolita3 = new HiloBolita(0, 150, 4,
 															 ventana.getGraphics(),
@@ -49,10 +48,10 @@ public class MainHiloBolita {
 		ventana.add(bolita3);
 
 		thread.start();
-		Thread.sleep(100);
+		Thread.sleep(1000);
 
 		thread2.start();
-		Thread.sleep(100);
+		//Thread.sleep(100);
 
 		thread3.start();
 
