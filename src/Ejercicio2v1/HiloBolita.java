@@ -1,10 +1,8 @@
 package Ejercicio2v1;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionListener {
+public class HiloBolita extends javax.swing.JPanel implements Runnable {
 
 	private int x;
 	private final int y;
@@ -13,8 +11,7 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 	private final Color color;
 	private final double ancho;
 	private boolean parar;
-	private boolean pararBola1 = false;
-	boolean isAvailable = true;
+	public static final int BALL_SIZE = 10;
 
 	public HiloBolita(int x, int y, int desplazamiento, Graphics g,
 					  Color color, double ancho) {
@@ -29,34 +26,45 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 	}
 
 	@Override
-
 	public void run() {
 
 		parar = false;
 
 		for (int i = 0; i < 3500; i++) {
-			paint(g, color, x, y, desplazamiento);
+			estaParada();
+			paint(g);
 			mueveBolita();
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException ex) {
-
+			} catch (InterruptedException ignored) {
 			}
 		}
 
 	}
 
-	public void paint(Graphics g, Color color, int x, int y, int desplazamiento) {
-
-		//g.setColor(getBackground());
-//		g.fillOval(x - desplazamiento, y, 50, 50);
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
 		g.setColor(color);
-		g.fillOval(x, y, (int) ancho, (int) ancho);
+		g.fillOval(x, y, BALL_SIZE, BALL_SIZE);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	public synchronized void parar() {
+		parar = true;
+	}
 
+	public synchronized void reanudar() {
+		parar = false;
+		notifyAll();
+	}
+
+	public synchronized void estaParada() {
+		while (parar) {
+			try {
+				wait();
+			} catch (InterruptedException ignored) {
+			}
+		}
 	}
 
 	/**
@@ -89,7 +97,7 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 					  .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-																				  .addContainerGap(222, Short.MAX_VALUE)
+																				  .addContainerGap(300, Short.MAX_VALUE)
 																				  .addComponent(pararBola)
 																				  .addGap(55, 55, 55))
 		);
@@ -97,29 +105,26 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 
 	private void pararBolaActionPerformed(java.awt.event.ActionEvent evt) {
 		if (this.pararBola.getText().equalsIgnoreCase("Parar Bola 1")) {
-			this.pararBola1 = true;
+			parar();
 			this.pararBola.setText("Reanudar Bola 1");
 			System.out.println("Parando Bola 1");
-			repaint();
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException ex) {
-				//Logger.getLogger(HiloBolita.class.getName()).log(Level.SEVERE, null, ex);
-			}
+
 		} else {
-			this.pararBola1 = false;
+			reanudar();
 			this.pararBola.setText("Parar Bola 1");
 			System.out.println("Reanudando bola 1");
-			repaint();
 		}
+		paint(this.getGraphics());
 
 	}
+
+
 
 	private javax.swing.JButton pararBola;
 
 	public void mueveBolita() {
 
-		if (x > getWidth()) {
+		if (x > ancho) {
 			x = (int) ancho;
 			desplazamiento = -desplazamiento;
 		}
@@ -131,5 +136,4 @@ public class HiloBolita extends javax.swing.JPanel implements Runnable, ActionLi
 		x = x + desplazamiento;
 
 	}
-
 }

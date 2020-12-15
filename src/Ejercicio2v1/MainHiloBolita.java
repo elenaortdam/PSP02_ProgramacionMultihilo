@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainHiloBolita {
+
+	public static final int WIDTH = 450;
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -13,45 +16,39 @@ public class MainHiloBolita {
 		HiloBolita bolita2;
 		HiloBolita bolita3;
 		JFrame ventana = new JFrame();
-		ventana.setSize(450, 300);
+		ventana.setSize(WIDTH, 300);
 		ventana.setVisible(true);
 		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		ventana.setResizable(false);
 
-		ThreadGroup threadGroup = new ThreadGroup("Bolitas");
-
-		Thread thread = new Thread(threadGroup, bolita1 = new HiloBolita(0, 50, 1,
-																		 ventana.getGraphics(),
-																		 Color.RED, 20),
+		Thread thread = new Thread(bolita1 = new HiloBolita(0, 50, 1,
+															ventana.getGraphics(),
+															Color.RED, WIDTH),
 								   "Bola 1");
 
 		ventana.add(bolita1);
 		final RepaintManager repaintBola1 = RepaintManager.currentManager(bolita1);
 		repaintBola1.addInvalidComponent(bolita1);
-
+		repaintBola1.addDirtyRegion(bolita1, 0, 50, WIDTH, 20);
 		Thread.sleep(100);
 
-		Thread thread2 = new Thread(threadGroup,
-									bolita2 = new HiloBolita(0, 100, 2,
+		Thread thread2 = new Thread(bolita2 = new HiloBolita(0, 100, 2,
 															 ventana.getGraphics(),
-															 Color.BLUE, 20),
+															 Color.BLUE, WIDTH),
 									"Bola 2");
 
 		ventana.add(bolita2);
 
-		Thread thread3 = new Thread(threadGroup,
-									bolita3 = new HiloBolita(0, 150, 3,
+		Thread thread3 = new Thread(bolita3 = new HiloBolita(0, 150, 3,
 															 ventana.getGraphics(),
-															 Color.GREEN, 20),
+															 Color.GREEN, WIDTH),
 									"Bola 3");
 
 		ventana.add(bolita3);
 
 		thread.start();
-		//Thread.sleep(100);
 
 		thread2.start();
-		//Thread.sleep(100);
 
 		thread3.start();
 	}
